@@ -168,19 +168,6 @@ procedure Concurrent_Zoo is
       end if;
    end Handler;
 
-   --  procedure PandyHandler (Data : in out Integer) is
-   --     Buffer : constant Gtk_Text_Buffer := PandyView.Get_Buffer;
-   --     End_Of : Gtk_Text_Iter;
-   --  begin
-   --     Buffer.Get_End_Iter (End_Of);
-   --     Buffer.Insert
-   --       (  End_Of,
-   --          (  "Wbijam do pand -> "
-   --           &  Integer'Image (Data)
-   --           &  Character'Val (10)
-   --          )  );
-   --  end PandyHandler;
-
    BZoo: Buf(1, 20);
    BKasa: Buf(2, 3);
    BPandy: Buf(3, 5);
