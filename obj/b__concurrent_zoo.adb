@@ -1467,9 +1467,9 @@ package body ada_main is
    --   C:\GNAT\2020\include\gtkada_contributions_3_28\glib-object-checked_destroy.o
    --   C:\GNAT\2020\include\gtkada_contributions_3_28\gtk-missed.o
    --   C:\GNAT\2020\include\gtkada_contributions_3_28\gtk-main-router.o
-   --   C:\Users\Kinga\Desktop\Projekt\obj\concurrent_zoo.o
-   --   -LC:\Users\Kinga\Desktop\Projekt\obj\
-   --   -LC:\Users\Kinga\Desktop\Projekt\obj\
+   --   C:\Users\Kinga\Documents\GitHub\ConcurrentZOO\obj\concurrent_zoo.o
+   --   -LC:\Users\Kinga\Documents\GitHub\ConcurrentZOO\obj\
+   --   -LC:\Users\Kinga\Documents\GitHub\ConcurrentZOO\obj\
    --   -LC:\GNAT\2020\include\gtkada_contributions_3_28\
    --   -LC:\GtkAda\lib\gtkada\gtkada.static\gtkada\
    --   -LC:/gnat/2020/lib/gcc/x86_64-pc-mingw32/9.3.1/adalib/

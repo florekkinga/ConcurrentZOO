@@ -1,5 +1,5 @@
-concurrent_zoo.adb:63:10: warning: potentially blocking operation in protected operation
-concurrent_zoo.adb:74:13: warning: potentially blocking operation in protected operation
-concurrent_zoo.adb:76:13: warning: potentially blocking operation in protected operation
-concurrent_zoo.adb:78:13: warning: potentially blocking operation in protected operation
-concurrent_zoo.adb:80:13: warning: potentially blocking operation in protected operation
+concurrent_zoo.adb:66:10: warning: potentially blocking operation in protected operation
+concurrent_zoo.adb:77:13: warning: potentially blocking operation in protected operation
+concurrent_zoo.adb:79:13: warning: potentially blocking operation in protected operation
+concurrent_zoo.adb:81:13: warning: potentially blocking operation in protected operation
+concurrent_zoo.adb:83:13: warning: potentially blocking operation in protected operation
