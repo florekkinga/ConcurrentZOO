@@ -1,0 +1,37 @@
+[GENERATED OBJECT FILE]
+b__concurrent_zoo.o
+[PROJECT FILES]
+C:\Users\Kinga\Desktop\Projekt\concurrent_zoo.gpr
+20210103150242 66a56c73c70349cbdc0958ae475aab31
+C:\GtkAda\lib\gnat\gtkada.gpr
+20210102221458 c4dc05ad812e568a18a717bdfba06143
+C:\GNAT\2020\include\gtkada_contributions_3_28\gtkada_contributions.gpr
+20190820092112 7887bb2bec1759067b72bb9dc8d78d54
+[BOUND OBJECT FILES]
+C:\GNAT\2020\include\gtkada_contributions_3_28\glib-wrappers.o
+C:\GNAT\2020\include\gtkada_contributions_3_28\gdk-color-ihls.o
+C:\GNAT\2020\include\gtkada_contributions_3_28\glib-object-checked_destroy.o
+C:\GNAT\2020\include\gtkada_contributions_3_28\gtk-missed.o
+C:\GNAT\2020\include\gtkada_contributions_3_28\gtk-main-router.o
+C:\Users\Kinga\Desktop\Projekt\obj\concurrent_zoo.o
+[GENERATED SOURCE FILES]
+b__concurrent_zoo.ads
+b__concurrent_zoo.adb
+b__concurrent_zoo.ali
+[RESULTING OPTIONS]
+-LC:\Users\Kinga\Desktop\Projekt\obj\
+-LC:\Users\Kinga\Desktop\Projekt\obj\
+-LC:\GNAT\2020\include\gtkada_contributions_3_28\
+-LC:\GtkAda\lib\gtkada\gtkada.static\gtkada\
+-LC:/gnat/2020/lib/gcc/x86_64-pc-mingw32/9.3.1/adalib/
+-static
+-static-libgcc
+-shared-libgcc
+-shared-libgcc
+-shared-libgcc
+C:/gnat/2020/lib/gcc/x86_64-pc-mingw32/9.3.1/adalib/libgnarl.a
+C:/gnat/2020/lib/gcc/x86_64-pc-mingw32/9.3.1/adalib/libgnat.a
+-lws2_32
+-Xlinker
+--stack=0x200000,0x1000
+-mthreads

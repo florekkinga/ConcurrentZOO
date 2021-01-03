@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<Locations >
+  <Project >
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project>C:\Users\Kinga\Documents\GitHub\ConcurrentZOO\projekt.gpr</vfs_project>
+      <vfs_file>C:\Users\Kinga\Documents\GitHub\ConcurrentZOO\src\projekt.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 10" line=" 65" >
+      <vfs_project>C:\Users\Kinga\Documents\GitHub\ConcurrentZOO\projekt.gpr</vfs_project>
+      <vfs_file>C:\Users\Kinga\Documents\GitHub\ConcurrentZOO\src\projekt.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 18" line=" 171" >
+      <vfs_project>C:\Users\Kinga\Documents\GitHub\ConcurrentZOO\projekt.gpr</vfs_project>
+      <vfs_file>C:\Users\Kinga\Documents\GitHub\ConcurrentZOO\src\projekt.adb</vfs_file>
+    </file_marker>
+    <file_marker current="true" column=" 10" line=" 65" >
+      <vfs_project>C:\Users\Kinga\Documents\GitHub\ConcurrentZOO\projekt.gpr</vfs_project>
+      <vfs_file>C:\Users\Kinga\Documents\GitHub\ConcurrentZOO\src\projekt.adb</vfs_file>
+    </file_marker>
+  </Project>
+</Locations>

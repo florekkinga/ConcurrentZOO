@@ -17,7 +17,7 @@ package ada_main is
    pragma Import (C, gnat_exit_status);
 
    GNAT_Version : constant String :=
-                    "GNAT Version: Community 2020 (20200818-93)" & ASCII.NUL;
+                    "GNAT Version: Community 2020 (20200429-93)" & ASCII.NUL;
    pragma Export (C, GNAT_Version, "__gnat_version");
 
    Ada_Main_Program_Name : constant String := "_ada_projekt" & ASCII.NUL;
@@ -37,7 +37,7 @@ package ada_main is
    pragma Export (C, main, "main");
 
    type Version_32 is mod 2 ** 32;
-   u00001 : constant Version_32 := 16#6b53b25e#;
+   u00001 : constant Version_32 := 16#88ed6bd1#;
    pragma Export (C, u00001, "projektB");
    u00002 : constant Version_32 := 16#67c8d842#;
    pragma Export (C, u00002, "system__standard_libraryB");
