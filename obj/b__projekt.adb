@@ -1111,11 +1111,11 @@ package body ada_main is
    end;
 
 --  BEGIN Object file/option list
-   --   C:\Users\Worso\Desktop\Informatyka\Semestr 5\PWiR\Projekt\obj\projekt.o
-   --   -LC:\Users\Worso\Desktop\Informatyka\Semestr 5\PWiR\Projekt\obj\
-   --   -LC:\Users\Worso\Desktop\Informatyka\Semestr 5\PWiR\Projekt\obj\
-   --   -LD:\GtkAda\lib\gtkada\gtkada.static\gtkada\
-   --   -LD:/gnat/2020/lib/gcc/x86_64-pc-mingw32/9.3.1/adalib/
+   --   C:\Users\Kinga\Documents\GitHub\ConcurrentZOO\obj\projekt.o
+   --   -LC:\Users\Kinga\Documents\GitHub\ConcurrentZOO\obj\
+   --   -LC:\Users\Kinga\Documents\GitHub\ConcurrentZOO\obj\
+   --   -LC:\GtkAda\lib\gtkada\gtkada.static\gtkada\
+   --   -LC:/gnat/2020/lib/gcc/x86_64-pc-mingw32/9.3.1/adalib/
    --   -static
    --   -shared-libgcc
    --   -shared-libgcc

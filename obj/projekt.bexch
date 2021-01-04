@@ -1,28 +1,28 @@
 [GENERATED OBJECT FILE]
 b__projekt.o
 [PROJECT FILES]
-C:\Users\Worso\Desktop\Informatyka\Semestr 5\PWiR\Projekt\projekt.gpr
-20201230200000 d08d2fcefa4c6714479d2a5b01c3dbb1
-D:\GtkAda\lib\gnat\gtkada.gpr
-20201230101440 d043f9333891124852109cc6d70a506a
+C:\Users\Kinga\Documents\GitHub\ConcurrentZOO\projekt.gpr
+20201230222204 63ad203cd1b9d881729cee17beeaa4ab
+C:\GtkAda\lib\gnat\gtkada.gpr
+20201230144944 c4dc05ad812e568a18a717bdfba06143
 [BOUND OBJECT FILES]
-C:\Users\Worso\Desktop\Informatyka\Semestr 5\PWiR\Projekt\obj\projekt.o
+C:\Users\Kinga\Documents\GitHub\ConcurrentZOO\obj\projekt.o
 [GENERATED SOURCE FILES]
 b__projekt.ads
 b__projekt.adb
 b__projekt.ali
 [RESULTING OPTIONS]
--LC:\Users\Worso\Desktop\Informatyka\Semestr 5\PWiR\Projekt\obj\
--LC:\Users\Worso\Desktop\Informatyka\Semestr 5\PWiR\Projekt\obj\
--LD:\GtkAda\lib\gtkada\gtkada.static\gtkada\
--LD:/gnat/2020/lib/gcc/x86_64-pc-mingw32/9.3.1/adalib/
+-LC:\Users\Kinga\Documents\GitHub\ConcurrentZOO\obj\
+-LC:\Users\Kinga\Documents\GitHub\ConcurrentZOO\obj\
+-LC:\GtkAda\lib\gtkada\gtkada.static\gtkada\
+-LC:/gnat/2020/lib/gcc/x86_64-pc-mingw32/9.3.1/adalib/
 -static
 -static-libgcc
 -shared-libgcc
 -shared-libgcc
 -shared-libgcc
-D:/gnat/2020/lib/gcc/x86_64-pc-mingw32/9.3.1/adalib/libgnarl.a
-D:/gnat/2020/lib/gcc/x86_64-pc-mingw32/9.3.1/adalib/libgnat.a
+C:/gnat/2020/lib/gcc/x86_64-pc-mingw32/9.3.1/adalib/libgnarl.a
+C:/gnat/2020/lib/gcc/x86_64-pc-mingw32/9.3.1/adalib/libgnat.a
 -Xlinker
 --stack=0x200000,0x1000
 -mthreads
