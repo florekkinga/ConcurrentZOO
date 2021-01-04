@@ -17,6 +17,7 @@ with Gtk.Missed;
 with Gtk.Main;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Strings.Unbounded.Text_IO; use Ada.Strings.Unbounded.Text_IO;
+with Ada.Calendar; use Ada.Calendar;
 
 procedure Concurrent_Zoo is
 
@@ -40,6 +41,7 @@ procedure Concurrent_Zoo is
    PandyCounter : Integer;
    ZooCounter : Integer;
    KasaCounter : Integer;
+   StartTime : Time := Clock;
 
    type Local_Callback is access procedure;
    function "+" is
@@ -48,6 +50,7 @@ procedure Concurrent_Zoo is
    type ABuf is array (Integer range<>) of Integer;
    type Msg is array (1..4) of Unbounded_String;
    type Dly is array (1..4) of Duration;
+   type Dlx is array (Integer range<>) of Duration;
    type Tuple is array (1..2) of Integer;
 
    protected type Buf(I: Integer; N: Integer) is
@@ -55,35 +58,61 @@ procedure Concurrent_Zoo is
       entry Pobierz(C : out Integer; Tmp : out Integer);
    private
       Text : Msg := (To_Unbounded_String("Wchodzi do zoo: "), To_Unbounded_String("Przy kasie: "), To_Unbounded_String("Pandy: "), To_Unbounded_String("Lisy: "));
-      -- Delayy : Dly := (1, 2, 3, 4);
-      B : ABuf(1..N);
+      Delayy : Dly := (0.5, 2.0, 5.0, 8.0);
+      Delayx : Dlx(1..N) := (others => 0.0);
+      B : ABuf(1..N)  := (others => 0);
       Counter : Integer := 0;
+      Pivot : Integer := 0;
+      Pivot2 : Integer := 0;
+      --Delayx : Duration := Clock - StartTime;
    end Buf;
 
    protected body Buf is
       entry Wstaw(C : in Integer; Tmp : out Integer) when Counter < N is
       begin
-         delay 0.1;
+         -- delay 0.1;
          Counter := Counter + 1;
-         B (Counter) := C;
+         Pivot := Pivot + 1;
+         B (Pivot) := C;
          Put_Line(Text(I) & Counter 'Img);
          Tmp := Counter;
+         Delayx(Pivot) := (Clock - StartTime) + Delayy(I);
+         Put_Line(Duration'Image(Clock - StartTime));
+         Put_Line(Duration'Image(Delayx(Pivot)));
+         if Pivot = N then
+            Pivot := 0;
+         end if;
       end Wstaw;
 
       entry Pobierz(C : out Integer; Tmp : out Integer) when Counter > 0 is
+         Finished : Boolean := False;
       begin
-         C := B (Counter);
-         if I = 1 then
-            delay 0.1;
-         elsif I = 2 then
-            delay 0.1;
-         elsif I = 3 then
-            delay 5.0;
-         elsif I = 4 then
-            delay 8.0;
-         end if;
-         Counter := Counter - 1;
-         Tmp := Counter;
+         C := 0;
+         for I in 1..N loop
+            if B(I) /= 0 and Delayx(I) <= (Clock - StartTime) then
+               --  Put_Line("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: " & B(I)'Image);
+               C := B (I);
+               B(I) := 0;
+         --  Pivot2 := Pivot2 + 1;
+         --  C := B (Pivot2);
+         --  if Pivot2 = N then
+         --     Pivot2 := 0;
+         --  end if;
+         --  if I = 1 then
+         --     delay 0.1;
+         --  elsif I = 2 then
+         --     delay 0.1;
+         --  elsif I = 3 then
+         --     delay 50.0;
+         --  elsif I = 4 then
+         --     delay 8.0;
+         --  end if;
+               Counter := Counter - 1;
+               Tmp := Counter;
+               Finished := True;
+            end if;
+            exit when Finished;
+         end loop;
       end Pobierz;
    end Buf;
 
@@ -175,22 +204,22 @@ procedure Concurrent_Zoo is
 
    procedure FoxUpdate is
    begin
-      FoxLabel.Set_Text ("Lisy: " & Integer'Image (FoxCounter));
+      FoxLabel.Set_Text ("Lisy: " & Integer'Image (FoxCounter) & "/5");
    end FoxUpdate;
 
    procedure PandyUpdate is
    begin
-      PandyLabel.Set_Text ("Pandy: " & Integer'Image (PandyCounter));
+      PandyLabel.Set_Text ("Pandy: " & Integer'Image (PandyCounter) & "/5");
    end PandyUpdate;
 
    procedure ZooUpdate is
    begin
-      ZooLabel.Set_Text ("Zoo: " & Integer'Image (ZooCounter));
+      ZooLabel.Set_Text ("Zoo: " & Integer'Image (ZooCounter) & "/20");
    end ZooUpdate;
 
    procedure KasaUpdate is
    begin
-      KasaLabel.Set_Text ("Kasa: " & Integer'Image (KasaCounter));
+      KasaLabel.Set_Text ("Kasa: " & Integer'Image (KasaCounter) & "/3");
    end KasaUpdate;
 
    task type ScrollTask (Id : Integer);
@@ -199,8 +228,7 @@ procedure Concurrent_Zoo is
       K: Integer := 0;
       T: Tuple;
    begin
-      loop
-         if Id = 1 then -- wejscie do zoo
+      if Id = 1 then -- wejscie do zoo
             for K in 1..50 loop
                Put_Line("Wbijam do zoo -> " & K'Img);
                T := (K, 1);
@@ -208,59 +236,76 @@ procedure Concurrent_Zoo is
                Messages.Send (Handler'Access, T);
                Request (+ZooUpdate'Access);
             end loop;
-         elsif Id = 2 then -- wejscie do kasy
+      end if;
+      loop
+         if Id = 2 then -- wejscie do kasy
             BZoo.Pobierz(K, ZooCounter);
-            Request (+ZooUpdate'Access);
-            T := (K, 2);
-            Put_Line("Wbijam do kasy -> " & K'Img);
-            Messages.Send (Handler'Access, T);
-            BKasa.Wstaw(K, KasaCounter);
-            Request (+KasaUpdate'Access);
+            if K /= 0 then
+               Request (+ZooUpdate'Access);
+               T := (K, 2);
+               Put_Line("Wbijam do kasy -> " & K'Img);
+               Messages.Send (Handler'Access, T);
+               BKasa.Wstaw(K, KasaCounter);
+               Request (+KasaUpdate'Access);
+            end if;
          elsif Id = 3 then -- wejscie do lisow z kasy
             BKasa.Pobierz(K, KasaCounter);
-            Request (+KasaUpdate'Access);
-            T := (K, 3);
-            Put_Line("Wbijam do lisow -> " & K'Img);
-            Messages.Send (Handler'Access, T);
-            BLisy.Wstaw(K, FoxCounter);
-            Request (+FoxUpdate'Access);
+            if K /= 0 then
+               Request (+KasaUpdate'Access);
+               T := (K, 3);
+               Put_Line("Wbijam do lisow -> " & K'Img);
+               Messages.Send (Handler'Access, T);
+               BLisy.Wstaw(K, FoxCounter);
+               Request (+FoxUpdate'Access);
+            end if;
          elsif Id = 4 then -- wejscie do pand z kasy
             BKasa.Pobierz(K, KasaCounter);
-            Request (+KasaUpdate'Access);
-            T := (K, 4);
-            Put_Line("Wbijam do pand -> " & K'Img);
-            Messages.Send (Handler'Access, T);
-            BPandy.Wstaw(K, PandyCounter);
-            Request (+PandyUpdate'Access);
+            if K /= 0 then
+               Request (+KasaUpdate'Access);
+               T := (K, 4);
+               Put_Line("Wbijam do pand -> " & K'Img);
+               Messages.Send (Handler'Access, T);
+               BPandy.Wstaw(K, PandyCounter);
+               Request (+PandyUpdate'Access);
+            end if;
          elsif Id = 5 then -- wyjscie z zoo od lisow
             BLisy.Pobierz(K, FoxCounter);
-            T := (K, 5);
-            Messages.Send (Handler'Access, T);
-            Request (+FoxUpdate'Access);
-            Put_Line("Wyjscie od lisow -> " & K'Img);
+            if K /= 0 then
+               T := (K, 5);
+               Messages.Send (Handler'Access, T);
+               Request (+FoxUpdate'Access);
+               Put_Line("Wyjscie od lisow -> " & K'Img);
+            end if;
          elsif Id = 6 then -- wyjscie z zoo od pand
             BPandy.Pobierz(K, PandyCounter);
-            T := (K, 6);
-            Messages.Send (Handler'Access, T);
-            Request (+PandyUpdate'Access);
-            Put_Line("Wyjscie od pand -> " & K'Img);
+            if K /= 0 then
+               T := (K, 6);
+               Messages.Send (Handler'Access, T);
+               Request (+PandyUpdate'Access);
+               Put_Line("Wyjscie od pand -> " & K'Img);
+            end if;
          elsif Id = 7 then -- przejscie z pand do lisow
             BPandy.Pobierz(K, PandyCounter);
-            Request (+PandyUpdate'Access);
-            T := (K, 7);
-            Messages.Send (Handler'Access, T);
-            Put_Line("Wyjscie od pand do lisow -> " & K'Img);
-            BLisy.Wstaw(K, FoxCounter);
-            Request (+FoxUpdate'Access);
+            if K /= 0 then
+               Request (+PandyUpdate'Access);
+               T := (K, 7);
+               Messages.Send (Handler'Access, T);
+               Put_Line("Wyjscie od pand do lisow -> " & K'Img);
+               BLisy.Wstaw(K, FoxCounter);
+               Request (+FoxUpdate'Access);
+            end if;
          elsif Id = 8 then -- przejscie z lisow do pand
             BLisy.Pobierz(K, FoxCounter);
-            Request (+FoxUpdate'Access);
-            T := (K, 8);
-            Messages.Send (Handler'Access, T);
-            Put_Line("Wyjscie od lisow do pand -> " & K'Img);
-            BPandy.Wstaw(K, PandyCounter);
-            Request (+PandyUpdate'Access);
+            if K /= 0 then
+               Request (+FoxUpdate'Access);
+               T := (K, 8);
+               Messages.Send (Handler'Access, T);
+               Put_Line("Wyjscie od lisow do pand -> " & K'Img);
+               BPandy.Wstaw(K, PandyCounter);
+               Request (+PandyUpdate'Access);
+            end if;
          end if;
+         delay 0.1;
       end loop;
    exception
       when Quit_Error => -- Main loop was quitted, we follow
@@ -268,6 +313,12 @@ procedure Concurrent_Zoo is
       when Error : others =>
          Say (Exception_Information (Error)); -- This is safe
    end ScrollTask;
+
+   procedure Cos is
+   begin
+      Put_Line("Cos");
+      delay 3.0;
+   end Cos;
 
 begin
    Gtk.Main.Init;
@@ -286,10 +337,10 @@ begin
    Box.Pack_Start(Child => BoxH1, Expand => False, Fill => False);
    Box.Pack_Start(Child => BoxH2, Expand => True, Fill => True);
 
-   Gtk_New (FoxLabel, "Fox: 0");
-   Gtk_New (PandyLabel, "Pandy: 0");
-   Gtk_New (ZooLabel, "Zoo: 0");
-   Gtk_New (KasaLabel, "Kasa: 0");
+   Gtk_New (FoxLabel, "Fox: 0/5");
+   Gtk_New (PandyLabel, "Pandy: 0/5");
+   Gtk_New (ZooLabel, "Zoo: 0/20");
+   Gtk_New (KasaLabel, "Kasa: 0/3");
    BoxH1.Pack_Start (Child => FoxLabel, Expand => True, Fill => False);
    BoxH1.Pack_Start (Child => PandyLabel, Expand => True, Fill => False);
    BoxH1.Pack_Start (Child => ZooLabel, Expand => True, Fill => False);
@@ -323,12 +374,16 @@ begin
       Zoo : ScrollTask(1);
       Kasa : ScrollTask(2);
       Lisy : ScrollTask(3);
-      Pandy : ScrollTask(4);
+      Pandy2Lisyy2Lisyy : ScrollTask(4);
       WyjscieLisy : ScrollTask(5);
       WyjsciePandy : ScrollTask(6);
       Pandy2Lisy : ScrollTask(7);
-      Lisy2Pandy : ScrollTask(8);
+      Lisysy2Pandy : ScrollTask(8);
    begin
+      --  for I in 1..20 loop
+      --     Cos;
+      --  end loop;
+      --  delay 20.0;
       Gtk.Main.Main;
    end;
 exception

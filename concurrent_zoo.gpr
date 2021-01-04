@@ -1,4 +1,4 @@
-with "..\..\..\..\GNAT\2020\include\gtkada_contributions_3_28\gtkada_contributions.gpr";
+with "D:\GNAT\2020\include\gtkada_contributions_3_28\gtkada_contributions.gpr";
 
 project Concurrent_Zoo is
 
