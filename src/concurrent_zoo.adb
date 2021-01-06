@@ -22,28 +22,6 @@ with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 
 procedure Concurrent_Zoo is
 
-<<<<<<< Updated upstream
-   Window  : Gtk_Window;
-   Box     : Gtk_VBox;
-   BoxH1   : Gtk_Hbox;
-   BoxH2   : Gtk_Hbox;
-   FoxLabel   : Gtk_Label;
-   KasaLabel  : Gtk_Label;
-   ZooLabel   : Gtk_Label;
-   PandyLabel  : Gtk_Label;
-   PandyView    : Gtk_Text_View;
-   PandyScroll  : Gtk_Scrolled_Window;
-   FoxView    : Gtk_Text_View;
-   FoxScroll  : Gtk_Scrolled_Window;
-   ZooView    : Gtk_Text_View;
-   ZooScroll  : Gtk_Scrolled_Window;
-   KasaView    : Gtk_Text_View;
-   KasaScroll  : Gtk_Scrolled_Window;
-   FoxCounter : Integer;
-   PandyCounter : Integer;
-   ZooCounter : Integer;
-   KasaCounter : Integer;
-=======
    type ABuf is array (Integer range<>) of Integer;
    type Msg is array (Integer range<>) of Unbounded_String;
    type Dlx is array (Integer range<>) of Duration;
@@ -99,27 +77,16 @@ procedure Concurrent_Zoo is
 
    TimeLabel : Gtk_Label;
    TimeCounter : Duration;
->>>>>>> Stashed changes
    StartTime : Time := Clock;
 
    type Local_Callback is access procedure;
    function "+" is
      new Ada.Unchecked_Conversion (Local_Callback, Gtk_Callback);
 
-   type ABuf is array (Integer range<>) of Integer;
-   type Msg is array (1..4) of Unbounded_String;
-   type Dly is array (1..4) of Duration;
-   type Dlx is array (Integer range<>) of Duration;
-   type Tuple is array (1..2) of Integer;
-
    protected type Buf(I: Integer; N: Integer) is
       entry Wstaw(C : in Integer; Tmp : in out Integer);
       entry Pobierz(C : out Integer; Tmp : in out Integer);
    private
-<<<<<<< Updated upstream
-      Text : Msg := (To_Unbounded_String("Wchodzi do zoo: "), To_Unbounded_String("Przy kasie: "), To_Unbounded_String("Pandy: "), To_Unbounded_String("Lisy: "));
-      Delayy : Dly := (0.5, 2.0, 5.0, 8.0);
-=======
       Text : Msg(1..7) := (
                            To_Unbounded_String("Wchodzi do zoo: "),
                            To_Unbounded_String("Przy kasie: "),
@@ -129,7 +96,6 @@ procedure Concurrent_Zoo is
                            To_Unbounded_String("Karmienie: "),
                            To_Unbounded_String("Wybieg: "));
       Delayy : Dly := (1.0, 2.5, 5.0, 8.0, 6.0, 4.0, 5.0);
->>>>>>> Stashed changes
       Delayx : Dlx(1..N) := (others => 0.0);
       B : ABuf(1..N)  := (others => 0);
       Counter : Integer := 0;
@@ -188,8 +154,6 @@ procedure Concurrent_Zoo is
       end Pobierz;
    end Buf;
 
-<<<<<<< Updated upstream
-=======
    BWejscie: Buf(1, 20);
    BKasa: Buf(2, 3);
    BPandy: Buf(3, 5);
@@ -199,25 +163,12 @@ procedure Concurrent_Zoo is
    BKarmienie: Buf(6, 5);
    BWybieg: Buf(7, 20);
 
->>>>>>> Stashed changes
    package Messages is new Generic_Message (Tuple);
    package Messages2 is new Generic_Message (TupleA);
 
-   procedure Handler (Data : in out Tuple) is
+   procedure HandlerPeople (Data : in out Tuple) is
       Buffer : Gtk_Text_Buffer;
       End_Of : Gtk_Text_Iter;
-<<<<<<< Updated upstream
-   begin
-      if Data(2) = 1 then -- wejscie do zoo
-         Buffer := ZooView.Get_Buffer;
-         Buffer.Get_End_Iter (End_Of);
-         Buffer.Insert
-           (  End_Of,
-              (  "Wbijam do zoo -> "
-               &  Integer'Image (Data(1))
-               &  Character'Val (10)
-              )  );
-=======
       ScrollText : Msg(1..8) := (
                                To_Unbounded_String("Wbijam do zoo -> "),
                                To_Unbounded_String("Wbijam do kasy -> "),
@@ -231,85 +182,30 @@ procedure Concurrent_Zoo is
    begin
       if Data(2) = 1 then -- wejscie do zoo
          Buffer := WejscieView.Get_Buffer;
->>>>>>> Stashed changes
       elsif Data(2) = 2 then -- wejscie do kasy
          Buffer := KasaView.Get_Buffer;
-         Buffer.Get_End_Iter (End_Of);
-         Buffer.Insert
-           (  End_Of,
-              (  "Wbijam do kasy -> "
-               &  Integer'Image (Data(1))
-               &  Character'Val (10)
-              )  );
       elsif Data(2) = 3 then -- wejscie do lisow z kasy
          Buffer := FoxView.Get_Buffer;
-         Buffer.Get_End_Iter (End_Of);
-         Buffer.Insert
-           (  End_Of,
-              (  "Wbijam do lisow -> "
-               &  Integer'Image (Data(1))
-               &  Character'Val (10)
-              )  );
       elsif Data(2) = 4 then -- wejscie do pand z kasy
          Buffer := PandyView.Get_Buffer;
-         Buffer.Get_End_Iter (End_Of);
-         Buffer.Insert
-           (  End_Of,
-              (  "Wbijam do pand -> "
-               &  Integer'Image (Data(1))
-               &  Character'Val (10)
-              )  );
       elsif Data(2) = 5 then -- wyjscie z zoo od lisow
-<<<<<<< Updated upstream
-         Buffer := ZooView.Get_Buffer;
-         Buffer.Get_End_Iter (End_Of);
-         Buffer.Insert
-           (  End_Of,
-              (  "Wychodze z ZOO od lisow -> "
-               &  Integer'Image (Data(1))
-               &  Character'Val (10)
-              )  );
-      elsif Data(2) = 6 then -- wyjscie z zoo od pand
-         Buffer := ZooView.Get_Buffer;
-         Buffer.Get_End_Iter (End_Of);
-         Buffer.Insert
-           (  End_Of,
-              (  "Wychodze z ZOO od pand -> "
-               &  Integer'Image (Data(1))
-               &  Character'Val (10)
-              )  );
-=======
          Buffer := WejscieView.Get_Buffer;
       elsif Data(2) = 6 then -- wyjscie z zoo od pand
          Buffer := WejscieView.Get_Buffer;
->>>>>>> Stashed changes
       elsif Data(2) = 7 then -- przejscie z pand do lisow
          Buffer := FoxView.Get_Buffer;
-         Buffer.Get_End_Iter (End_Of);
-         Buffer.Insert
-           (  End_Of,
-              (  "Przyszedlem od pand do lisow -> "
-               &  Integer'Image (Data(1))
-               &  Character'Val (10)
-              )  );
       elsif Data(2) = 8 then -- przejscie z lisow do pand
          Buffer := PandyView.Get_Buffer;
-         Buffer.Get_End_Iter (End_Of);
-         Buffer.Insert
-           (  End_Of,
-              (  "Przyszedlem od lisow do pand -> "
-               &  Integer'Image (Data(1))
-               &  Character'Val (10)
-              )  );
       end if;
-   end Handler;
+      Buffer.Get_End_Iter (End_Of);
+      Buffer.Insert
+        (  End_Of,
+           (  Ada.Strings.Unbounded.To_String(ScrollText(Data(2)))
+            &  Integer'Image (Data(1))
+            &  Character'Val (10)
+           )  );
+   end HandlerPeople;
 
-<<<<<<< Updated upstream
-   BZoo: Buf(1, 20);
-   BKasa: Buf(2, 3);
-   BPandy: Buf(3, 5);
-   BLisy: Buf(4, 5);
-=======
    procedure HandlerAnimals (Data : in out TupleA) is
       Buffer : Gtk_Text_Buffer;
       End_Of : Gtk_Text_Iter;
@@ -347,7 +243,6 @@ procedure Concurrent_Zoo is
             &  Character'Val (10)
            )  );
    end HandlerAnimals;
->>>>>>> Stashed changes
 
    procedure ZooUpdate is
    begin
@@ -405,9 +300,9 @@ procedure Concurrent_Zoo is
       KasaLabel.Set_Text ("Kasa: " & Integer'Image (KasaCounter) & "/3");
    end KasaUpdate;
 
-   task type ScrollTask (Id : Integer);
+   task type ScrollTaskPeople (Id : Integer);
 
-   task body ScrollTask is
+   task body ScrollTaskPeople is
       K: Integer := 0;
       T: Tuple;
    begin
@@ -415,15 +310,10 @@ procedure Concurrent_Zoo is
             for K in 1..50 loop
                Put_Line("Wbijam do zoo -> " & K'Img);
                T := (K, 1);
-<<<<<<< Updated upstream
-               BZoo.Wstaw(K, ZooCounter);
-               Messages.Send (Handler'Access, T);
-=======
                BWejscie.Wstaw(K, WejscieCounter);
                ZooCounter := ZooCounter + 1;
                Messages.Send (HandlerPeople'Access, T);
                Request (+WejscieUpdate'Access);
->>>>>>> Stashed changes
                Request (+ZooUpdate'Access);
                delay 1.0;
             end loop;
@@ -435,7 +325,7 @@ procedure Concurrent_Zoo is
                Request (+WejscieUpdate'Access);
                T := (K, 2);
                Put_Line("Wbijam do kasy -> " & K'Img);
-               Messages.Send (Handler'Access, T);
+               Messages.Send (HandlerPeople'Access, T);
                BKasa.Wstaw(K, KasaCounter);
                -- KasaCounter := KasaCounter + 1;
                Request (+KasaUpdate'Access);
@@ -446,7 +336,7 @@ procedure Concurrent_Zoo is
                Request (+KasaUpdate'Access);
                T := (K, 3);
                Put_Line("Wbijam do lisow -> " & K'Img);
-               Messages.Send (Handler'Access, T);
+               Messages.Send (HandlerPeople'Access, T);
                BLisy.Wstaw(K, FoxCounter);
                Request (+FoxUpdate'Access);
             end if;
@@ -456,7 +346,7 @@ procedure Concurrent_Zoo is
                Request (+KasaUpdate'Access);
                T := (K, 4);
                Put_Line("Wbijam do pand -> " & K'Img);
-               Messages.Send (Handler'Access, T);
+               Messages.Send (HandlerPeople'Access, T);
                BPandy.Wstaw(K, PandyCounter);
                Request (+PandyUpdate'Access);
             end if;
@@ -466,7 +356,7 @@ procedure Concurrent_Zoo is
                ZooCounter := ZooCounter - 1;
                Request (+ZooUpdate'Access);
                T := (K, 5);
-               Messages.Send (Handler'Access, T);
+               Messages.Send (HandlerPeople'Access, T);
                Request (+FoxUpdate'Access);
                Put_Line("Wyjscie od lisow -> " & K'Img);
             end if;
@@ -476,7 +366,7 @@ procedure Concurrent_Zoo is
                ZooCounter := ZooCounter - 1;
                Request (+ZooUpdate'Access);
                T := (K, 6);
-               Messages.Send (Handler'Access, T);
+               Messages.Send (HandlerPeople'Access, T);
                Request (+PandyUpdate'Access);
                Put_Line("Wyjscie od pand -> " & K'Img);
             end if;
@@ -485,7 +375,7 @@ procedure Concurrent_Zoo is
             if K /= 0 then
                Request (+PandyUpdate'Access);
                T := (K, 7);
-               Messages.Send (Handler'Access, T);
+               Messages.Send (HandlerPeople'Access, T);
                Put_Line("Wyjscie od pand do lisow -> " & K'Img);
                BLisy.Wstaw(K, FoxCounter);
                Request (+FoxUpdate'Access);
@@ -495,7 +385,7 @@ procedure Concurrent_Zoo is
             if K /= 0 then
                Request (+FoxUpdate'Access);
                T := (K, 8);
-               Messages.Send (Handler'Access, T);
+               Messages.Send (HandlerPeople'Access, T);
                Put_Line("Wyjscie od lisow do pand -> " & K'Img);
                BPandy.Wstaw(K, PandyCounter);
                Request (+PandyUpdate'Access);
@@ -514,9 +404,6 @@ procedure Concurrent_Zoo is
          null;
       when Error : others =>
          Say (Exception_Information (Error)); -- This is safe
-<<<<<<< Updated upstream
-   end ScrollTask;
-=======
    end ScrollTaskPeople;
 
    procedure SpanieUpdate is
@@ -604,7 +491,6 @@ procedure Concurrent_Zoo is
       when Error : others =>
          Say (Exception_Information (Error)); -- This is safe
    end ScrollTaskAnimals;
->>>>>>> Stashed changes
 
    procedure Cos is
    begin
@@ -623,23 +509,8 @@ begin
    Window.On_Destroy (Gtk.Missed.Destroy_Handler'Access);
 
    Box := Gtk_VBox_New;
-   BoxH1 := Gtk_Hbox_New;
-   BoxH2 := Gtk_Hbox_New;
    Window.Add (Box);
-   Box.Pack_Start(Child => BoxH1, Expand => False, Fill => False);
-   Box.Pack_Start(Child => BoxH2, Expand => True, Fill => True);
 
-<<<<<<< Updated upstream
-   Gtk_New (FoxLabel, "Fox: 0/5");
-   Gtk_New (PandyLabel, "Pandy: 0/5");
-   Gtk_New (ZooLabel, "Zoo: 0/20");
-   Gtk_New (KasaLabel, "Kasa: 0/3");
-   BoxH1.Pack_Start (Child => FoxLabel, Expand => True, Fill => False);
-   BoxH1.Pack_Start (Child => PandyLabel, Expand => True, Fill => False);
-   BoxH1.Pack_Start (Child => ZooLabel, Expand => True, Fill => False);
-   BoxH1.Pack_Start (Child => KasaLabel, Expand => True, Fill => False);
-
-=======
    Box0 := Gtk_Hbox_New;
    Box1H1 := Gtk_Hbox_New;
    Box1H2 := Gtk_Hbox_New;
@@ -660,34 +531,21 @@ begin
    Gtk_New (FoxScroll);
    FoxScroll.Add (FoxView);
 
-   Gtk_New (FoxLabel, "Lisy: 0/5");
->>>>>>> Stashed changes
-   Gtk_New (FoxView);
-   Gtk_New (FoxScroll);
-   FoxScroll.Add (FoxView);
-
+   Gtk_New (PandyLabel, "Lisy: 0/5");
    Gtk_New (PandyView);
    Gtk_New (PandyScroll);
    PandyScroll.Add (PandyView);
 
-<<<<<<< Updated upstream
-=======
    Gtk_New (WejscieLabel, "Wejscie: 0/20");
    Gtk_New (WejscieView);
    Gtk_New (WejscieScroll);
    WejscieScroll.Add (WejscieView);
 
    Gtk_New (KasaLabel, "Kasa: 0/3");
->>>>>>> Stashed changes
    Gtk_New (KasaView);
    Gtk_New (KasaScroll);
    KasaScroll.Add (KasaView);
 
-<<<<<<< Updated upstream
-   Gtk_New (ZooView);
-   Gtk_New (ZooScroll);
-   ZooScroll.Add (ZooView);
-=======
    Box0.Pack_Start (Child => ZooLabel, Expand => True, Fill => False);
    Box0.Pack_Start (Child => TimeLabel, Expand => True, Fill => False);
 
@@ -719,27 +577,15 @@ begin
    Box2H1.Pack_Start (Child => KarmienieLabel, Expand => True, Fill => False);
    Box2H1.Pack_Start (Child => SpanieLabel, Expand => True, Fill => False);
    Box2H1.Pack_Start (Child => WybiegLabel, Expand => True, Fill => False);
->>>>>>> Stashed changes
 
-   BoxH2.Pack_Start (Child => FoxScroll, Expand => True, Fill => True);
-   BoxH2.Pack_Start (Child => PandyScroll, Expand => True, Fill => True);
-   BoxH2.Pack_Start (Child => ZooScroll, Expand => True, Fill => True);
-   BoxH2.Pack_Start (Child => KasaScroll, Expand => True, Fill => True);
+   Box2H2.Pack_Start (Child => KarmienieScroll, Expand => True, Fill => True);
+   Box2H2.Pack_Start (Child => SpanieScroll, Expand => True, Fill => True);
+   Box2H2.Pack_Start (Child => WybiegScroll, Expand => True, Fill => True);
 
    Box.Show_All;
    Window.Show;
 
    declare
-<<<<<<< Updated upstream
-      Zoo : ScrollTask(1);
-      Kasa : ScrollTask(2);
-      Lisy : ScrollTask(3);
-      Pandy2Lisyy2Lisyy : ScrollTask(4);
-      WyjscieLisy : ScrollTask(5);
-      WyjsciePandy : ScrollTask(6);
-      Pandy2Lisy : ScrollTask(7);
-      Lisysy2Pandy : ScrollTask(8);
-=======
       Wejscie : ScrollTaskPeople(1);
       Kasa : ScrollTaskPeople(2);
       Lisy : ScrollTaskPeople(3);
@@ -761,7 +607,6 @@ begin
       LSpanie2Wybieg : ScrollTaskAnimals(4, 2);
       LKarmienie2Wybieg : ScrollTaskAnimals(5, 2);
 
->>>>>>> Stashed changes
    begin
       --  for I in 1..20 loop
       --     Cos;

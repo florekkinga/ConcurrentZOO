@@ -37,11 +37,7 @@ package ada_main is
    pragma Export (C, main, "main");
 
    type Version_32 is mod 2 ** 32;
-<<<<<<< Updated upstream
-   u00001 : constant Version_32 := 16#15704223#;
-=======
-   u00001 : constant Version_32 := 16#4842dec3#;
->>>>>>> Stashed changes
+   u00001 : constant Version_32 := 16#04694382#;
    pragma Export (C, u00001, "concurrent_zooB");
    u00002 : constant Version_32 := 16#67c8d842#;
    pragma Export (C, u00002, "system__standard_libraryB");
