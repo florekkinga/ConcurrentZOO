@@ -2,7 +2,11 @@
 b__concurrent_zoo.o
 [PROJECT FILES]
 C:\Users\Worso\Documents\GitHub\ConcurrentZOO\concurrent_zoo.gpr
+<<<<<<< Updated upstream
 20210104131200 2b338e4ee7f8dee44c7ee3bbb52c69e6
+=======
+20210106170716 2b338e4ee7f8dee44c7ee3bbb52c69e6
+>>>>>>> Stashed changes
 D:\GtkAda\lib\gnat\gtkada.gpr
 20201230101440 d043f9333891124852109cc6d70a506a
 D:\GNAT\2020\include\gtkada_contributions_3_28\gtkada_contributions.gpr
