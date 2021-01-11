@@ -19,6 +19,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Strings.Unbounded.Text_IO; use Ada.Strings.Unbounded.Text_IO;
 with Ada.Calendar; use Ada.Calendar;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 
 procedure Concurrent_Zoo is
 
@@ -101,13 +102,11 @@ procedure Concurrent_Zoo is
       Counter : Integer := 0;
       Pivot : Integer := 0;
       Pivot2 : Integer := 0;
-      --Delayx : Duration := Clock - StartTime;
    end Buf;
 
    protected body Buf is
       entry Wstaw(C : in Integer; Tmp : in out Integer) when Counter < N is
       begin
-         -- delay 0.1;
          Counter := Counter + 1;
          Pivot := Pivot + 1;
          B (Pivot) := C;
@@ -127,24 +126,9 @@ procedure Concurrent_Zoo is
          C := 0;
          for I in 1..N loop
             if B(I) /= 0 and Delayx(I) <= (Clock - StartTime) then
-               --  Put_Line("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: " & B(I)'Image);
                C := B (I);
                B(I) := 0;
                Delayx(I) := 0.0;
-         --  Pivot2 := Pivot2 + 1;
-         --  C := B (Pivot2);
-         --  if Pivot2 = N then
-         --     Pivot2 := 0;
-         --  end if;
-         --  if I = 1 then
-         --     delay 0.1;
-         --  elsif I = 2 then
-         --     delay 0.1;
-         --  elsif I = 3 then
-         --     delay 50.0;
-         --  elsif I = 4 then
-         --     delay 8.0;
-         --  end if;
                Counter := Counter - 1;
                Tmp := Counter;
                Finished := True;
@@ -170,10 +154,10 @@ procedure Concurrent_Zoo is
       Buffer : Gtk_Text_Buffer;
       End_Of : Gtk_Text_Iter;
       ScrollText : Msg(1..8) := (
-                               To_Unbounded_String("Wbijam do zoo -> "),
-                               To_Unbounded_String("Wbijam do kasy -> "),
-                               To_Unbounded_String("Wbijam do lisow -> "),
-                               To_Unbounded_String("Wbijam do pand -> "),
+                               To_Unbounded_String("Przychodze do zoo -> "),
+                               To_Unbounded_String("Przychodze do kasy -> "),
+                               To_Unbounded_String("Przychodze do lisow -> "),
+                               To_Unbounded_String("Przychodze do pand -> "),
                                To_Unbounded_String("Wychodze z zoo od lisow -> "),
                                To_Unbounded_String("Wychodze z zoo od pand -> "),
                                To_Unbounded_String("Przyszedlem od pand do lisow -> "),
@@ -250,13 +234,24 @@ procedure Concurrent_Zoo is
    end ZooUpdate;
 
    procedure TimeUpdate is
+      Mins     : Integer := (Integer(TimeCounter)/60) mod 60;
       Secs     : Integer := Integer(TimeCounter) mod 60;
       Milisecs : Integer := Integer((TimeCounter - Duration(Integer(TimeCounter)))*100 + 50.0);
       Tmp      : String := "0";
       Tmp2     : String := "000";
       TextSecs : String := "00";
       TextMili : String := "00";
+      TextMin  : String := "00";
    begin
+      if Mins < 10 then
+         TextMin := Integer'Image(Mins);
+         Tmp := TextMin(2 .. TextMin'Last);
+         TextMin := "0" & Tmp;
+      else
+         Tmp2 := Integer'Image(Mins);
+         TextMin := Tmp2(2 .. Tmp2'Last);
+      end if;
+
       if Secs < 10 then
          TextSecs := Integer'Image(Secs);
          Tmp := TextSecs(2 .. TextSecs'Last);
@@ -277,7 +272,7 @@ procedure Concurrent_Zoo is
          TextMili := Tmp2(2 .. Tmp2'Last);
       end if;
 
-      TimeLabel.Set_Text(TextSecs & ":" & TextMili);
+      TimeLabel.Set_Text(TextMin & ":" & TextSecs & ":" & TextMili);
    end TimeUpdate;
 
    procedure FoxUpdate is
@@ -392,10 +387,6 @@ procedure Concurrent_Zoo is
             end if;
          end if;
          TimeCounter := Clock - StartTime;
-         --  if TimeCounter >= 60.0 then
-         --     StartTime := StartTime + 60.0;
-         --     TimeCounter := Clock - StartTime;
-         --  end if;
          Request (+TimeUpdate'Access);
          delay 0.1;
       end loop;
@@ -491,12 +482,6 @@ procedure Concurrent_Zoo is
       when Error : others =>
          Say (Exception_Information (Error)); -- This is safe
    end ScrollTaskAnimals;
-
-   procedure Cos is
-   begin
-      Put_Line("Cos");
-      delay 3.0;
-   end Cos;
 
 begin
    Gtk.Main.Init;
@@ -608,11 +593,8 @@ begin
       LKarmienie2Wybieg : ScrollTaskAnimals(5, 2);
 
    begin
-      --  for I in 1..20 loop
-      --     Cos;
-      --  end loop;
-      --  delay 20.0;
       Gtk.Main.Main;
+      GNAT.OS_Lib.OS_Exit (0);
    end;
 exception
    when Error : others =>
