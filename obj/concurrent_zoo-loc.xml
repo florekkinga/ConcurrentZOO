@@ -1,55 +1,8 @@
 <?xml version="1.0"?>
 <Locations >
-  <Project >
-    <file_marker column=" 11" line=" 494" >
-      <vfs_project>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\concurrent_zoo.gpr</vfs_project>
-      <vfs_file>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\src\concurrent_zoo.adb</vfs_file>
-    </file_marker>
-    <file_marker column=" 14" line=" 3838" >
-      <vfs_project>D:\GtkAda\lib\gnat\gtkada.gpr</vfs_project>
-      <vfs_file>D:\GtkAda\include\gtkada\gtkada.static\gtkada\gtk-widget.ads</vfs_file>
-    </file_marker>
-    <file_marker column=" 21" line=" 596" >
-      <vfs_project>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\concurrent_zoo.gpr</vfs_project>
-      <vfs_file>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\src\concurrent_zoo.adb</vfs_file>
-    </file_marker>
-    <file_marker column=" 32" line=" 593" >
-      <vfs_project>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\concurrent_zoo.gpr</vfs_project>
-      <vfs_file>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\src\concurrent_zoo.adb</vfs_file>
-    </file_marker>
-    <file_marker column=" 21" line=" 596" >
-      <vfs_project>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\concurrent_zoo.gpr</vfs_project>
-      <vfs_file>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\src\concurrent_zoo.adb</vfs_file>
-    </file_marker>
-    <file_marker column=" 20" line=" 477" >
-      <vfs_project>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\concurrent_zoo.gpr</vfs_project>
-      <vfs_file>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\src\concurrent_zoo.adb</vfs_file>
-    </file_marker>
-    <file_marker column=" 21" line=" 596" >
-      <vfs_project>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\concurrent_zoo.gpr</vfs_project>
-      <vfs_file>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\src\concurrent_zoo.adb</vfs_file>
-    </file_marker>
-    <file_marker column=" 1" line=" 594" >
-      <vfs_project>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\concurrent_zoo.gpr</vfs_project>
-      <vfs_file>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\src\concurrent_zoo.adb</vfs_file>
-    </file_marker>
-    <file_marker column=" 7" line=" 597" >
-      <vfs_project>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\concurrent_zoo.gpr</vfs_project>
-      <vfs_file>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\src\concurrent_zoo.adb</vfs_file>
-    </file_marker>
-    <file_marker column=" 21" line=" 596" >
-      <vfs_project>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\concurrent_zoo.gpr</vfs_project>
-      <vfs_file>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\src\concurrent_zoo.adb</vfs_file>
-    </file_marker>
-    <file_marker column=" 7" line=" 597" >
-      <vfs_project>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\concurrent_zoo.gpr</vfs_project>
-      <vfs_file>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\src\concurrent_zoo.adb</vfs_file>
-    </file_marker>
-    <file_marker column=" 42" line=" 252" >
-      <vfs_project>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\concurrent_zoo.gpr</vfs_project>
-      <vfs_file>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\src\concurrent_zoo.adb</vfs_file>
-    </file_marker>
-    <file_marker current="true" column=" 42" line=" 275" >
+  <Project>
+    <vfs_file>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\concurrent_zoo.gpr</vfs_file>
+    <file_marker current="true" column=" 6" line=" 2" >
       <vfs_project>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\concurrent_zoo.gpr</vfs_project>
       <vfs_file>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\src\concurrent_zoo.adb</vfs_file>
     </file_marker>
