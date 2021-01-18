@@ -37,7 +37,7 @@ package ada_main is
    pragma Export (C, main, "main");
 
    type Version_32 is mod 2 ** 32;
-   u00001 : constant Version_32 := 16#3c61c142#;
+   u00001 : constant Version_32 := 16#b33b7e3c#;
    pragma Export (C, u00001, "concurrent_zooB");
    u00002 : constant Version_32 := 16#67c8d842#;
    pragma Export (C, u00002, "system__standard_libraryB");
@@ -1115,18 +1115,6 @@ package ada_main is
    pragma Export (C, u00538, "gtk__tableB");
    u00539 : constant Version_32 := 16#b624a5a5#;
    pragma Export (C, u00539, "gtk__tableS");
-   u00540 : constant Version_32 := 16#276453b7#;
-   pragma Export (C, u00540, "system__img_lldB");
-   u00541 : constant Version_32 := 16#c1828851#;
-   pragma Export (C, u00541, "system__img_lldS");
-   u00542 : constant Version_32 := 16#bd3715ff#;
-   pragma Export (C, u00542, "system__img_decB");
-   u00543 : constant Version_32 := 16#9c8d88e3#;
-   pragma Export (C, u00543, "system__img_decS");
-   u00544 : constant Version_32 := 16#9dca6636#;
-   pragma Export (C, u00544, "system__img_lliB");
-   u00545 : constant Version_32 := 16#23efd4e9#;
-   pragma Export (C, u00545, "system__img_lliS");
 
    --  BEGIN ELABORATION ORDER
    --  ada%s
@@ -1148,12 +1136,6 @@ package ada_main is
    --  system.img_enum_new%b
    --  system.img_int%s
    --  system.img_int%b
-   --  system.img_dec%s
-   --  system.img_dec%b
-   --  system.img_lli%s
-   --  system.img_lli%b
-   --  system.img_lld%s
-   --  system.img_lld%b
    --  system.io%s
    --  system.io%b
    --  system.machine_code%s

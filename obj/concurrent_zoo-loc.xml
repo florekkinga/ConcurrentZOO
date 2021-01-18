@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <Locations >
-  <Project>
-    <vfs_file>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\concurrent_zoo.gpr</vfs_file>
+  <Project >
     <file_marker current="true" column=" 6" line=" 2" >
       <vfs_project>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\concurrent_zoo.gpr</vfs_project>
       <vfs_file>C:\Users\Worso\Documents\GitHub\ConcurrentZOO\src\concurrent_zoo.adb</vfs_file>

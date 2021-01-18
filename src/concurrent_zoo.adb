@@ -21,8 +21,10 @@ with Ada.Calendar; use Ada.Calendar;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 
+-- Aplikacja symuluj±ca dzia³anie ogrodu zoologicznego
 procedure Concurrent_Zoo is
 
+   -- deklaracja typów oraz zmiennych
    type ABuf is array (Integer range<>) of Integer;
    type Msg is array (Integer range<>) of Unbounded_String;
    type Dlx is array (Integer range<>) of Duration;
@@ -80,22 +82,17 @@ procedure Concurrent_Zoo is
    TimeCounter : Duration;
    StartTime : Time := Clock;
 
+   -- typ oraz funkcja bêd±ca czê¶ci± GtkAda_Contributions,
+   -- konieczne do poprawnego dzia³ania procedur *Upgrade
    type Local_Callback is access procedure;
    function "+" is
      new Ada.Unchecked_Conversion (Local_Callback, Gtk_Callback);
 
+   -- typ bufor, przechowuj±cy ID odwiedzaj±cych/zwierz±t
    protected type Buf(I: Integer; N: Integer) is
       entry Wstaw(C : in Integer; Tmp : in out Integer);
       entry Pobierz(C : out Integer; Tmp : in out Integer);
    private
-      Text : Msg(1..7) := (
-                           To_Unbounded_String("Wchodzi do zoo: "),
-                           To_Unbounded_String("Przy kasie: "),
-                           To_Unbounded_String("Pandy: "),
-                           To_Unbounded_String("Lisy: "),
-                           To_Unbounded_String("Spanie: "),
-                           To_Unbounded_String("Karmienie: "),
-                           To_Unbounded_String("Wybieg: "));
       Delayy : Dly := (1.0, 2.5, 5.0, 8.0, 6.0, 4.0, 5.0);
       Delayx : Dlx(1..N) := (others => 0.0);
       B : ABuf(1..N)  := (others => 0);
@@ -105,21 +102,20 @@ procedure Concurrent_Zoo is
    end Buf;
 
    protected body Buf is
+      -- procedura wstawiania warto¶ci do bufora
       entry Wstaw(C : in Integer; Tmp : in out Integer) when Counter < N is
       begin
          Counter := Counter + 1;
          Pivot := Pivot + 1;
          B (Pivot) := C;
-         Put_Line(Text(I) & Counter 'Img);
          Tmp := Counter;
          Delayx(Pivot) := (Clock - StartTime) + Delayy(I);
-         Put_Line(Duration'Image(Clock - StartTime));
-         Put_Line(Duration'Image(Delayx(Pivot)));
          if Pivot = N then
             Pivot := 0;
          end if;
       end Wstaw;
 
+      -- procedura pobierania warto¶ci z bufora
       entry Pobierz(C : out Integer; Tmp : in out Integer) when Counter > 0 is
          Finished : Boolean := False;
       begin
@@ -138,6 +134,7 @@ procedure Concurrent_Zoo is
       end Pobierz;
    end Buf;
 
+   -- deklaracja buforów
    BWejscie: Buf(1, 20);
    BKasa: Buf(2, 3);
    BPandy: Buf(3, 5);
@@ -147,9 +144,11 @@ procedure Concurrent_Zoo is
    BKarmienie: Buf(6, 5);
    BWybieg: Buf(7, 20);
 
+   -- deklaracja pakietów Generic_Message
    package Messages is new Generic_Message (Tuple);
    package Messages2 is new Generic_Message (TupleA);
 
+   -- procedura zajmuj±ca siê przesy³aniem log'ów odwiedzaj±cych do wy¶wietlenia
    procedure HandlerPeople (Data : in out Tuple) is
       Buffer : Gtk_Text_Buffer;
       End_Of : Gtk_Text_Iter;
@@ -190,6 +189,7 @@ procedure Concurrent_Zoo is
            )  );
    end HandlerPeople;
 
+   -- procedura zajmuj±ca siê przesy³aniem log'ów zwierz±t do wy¶wietlenia
    procedure HandlerAnimals (Data : in out TupleA) is
       Buffer : Gtk_Text_Buffer;
       End_Of : Gtk_Text_Iter;
@@ -228,11 +228,13 @@ procedure Concurrent_Zoo is
            )  );
    end HandlerAnimals;
 
+   -- procedura aktualizuj±ca licznik osób w zoo
    procedure ZooUpdate is
    begin
       ZooLabel.Set_Text ("Zoo: " & Integer'Image (ZooCounter) & "/33");
    end ZooUpdate;
 
+   -- procedura aktualizuj±ca licznik czasu
    procedure TimeUpdate is
       Mins     : Integer := (Integer(TimeCounter)/60) mod 60;
       Secs     : Integer := Integer(TimeCounter) mod 60;
@@ -275,26 +277,31 @@ procedure Concurrent_Zoo is
       TimeLabel.Set_Text(TextMin & ":" & TextSecs & ":" & TextMili);
    end TimeUpdate;
 
+   -- procedura aktualizuj±ca licznik osób przy lisach
    procedure FoxUpdate is
    begin
       FoxLabel.Set_Text ("Lisy: " & Integer'Image (FoxCounter) & "/5");
    end FoxUpdate;
 
+   -- procedura aktualizuj±ca licznik osób przy pandach
    procedure PandyUpdate is
    begin
       PandyLabel.Set_Text ("Pandy: " & Integer'Image (PandyCounter) & "/5");
    end PandyUpdate;
 
+   -- procedura aktualizuj±ca licznik osób przy wej¶ciu
    procedure WejscieUpdate is
    begin
       WejscieLabel.Set_Text ("Wejscie: " & Integer'Image (WejscieCounter) & "/20");
    end WejscieUpdate;
 
+   -- procedura aktualizuj±ca licznik osób przy kasach
    procedure KasaUpdate is
    begin
       KasaLabel.Set_Text ("Kasa: " & Integer'Image (KasaCounter) & "/3");
    end KasaUpdate;
 
+   -- typ tasków dla czynno¶ci odwiedzaj±cych
    task type ScrollTaskPeople (Id : Integer);
 
    task body ScrollTaskPeople is
@@ -303,7 +310,6 @@ procedure Concurrent_Zoo is
    begin
       if Id = 1 then -- wejscie do zoo
             for K in 1..50 loop
-               Put_Line("Wbijam do zoo -> " & K'Img);
                T := (K, 1);
                BWejscie.Wstaw(K, WejscieCounter);
                ZooCounter := ZooCounter + 1;
@@ -319,10 +325,8 @@ procedure Concurrent_Zoo is
             if K /= 0 then
                Request (+WejscieUpdate'Access);
                T := (K, 2);
-               Put_Line("Wbijam do kasy -> " & K'Img);
                Messages.Send (HandlerPeople'Access, T);
                BKasa.Wstaw(K, KasaCounter);
-               -- KasaCounter := KasaCounter + 1;
                Request (+KasaUpdate'Access);
             end if;
          elsif Id = 3 then -- wejscie do lisow z kasy
@@ -330,7 +334,6 @@ procedure Concurrent_Zoo is
             if K /= 0 then
                Request (+KasaUpdate'Access);
                T := (K, 3);
-               Put_Line("Wbijam do lisow -> " & K'Img);
                Messages.Send (HandlerPeople'Access, T);
                BLisy.Wstaw(K, FoxCounter);
                Request (+FoxUpdate'Access);
@@ -340,7 +343,6 @@ procedure Concurrent_Zoo is
             if K /= 0 then
                Request (+KasaUpdate'Access);
                T := (K, 4);
-               Put_Line("Wbijam do pand -> " & K'Img);
                Messages.Send (HandlerPeople'Access, T);
                BPandy.Wstaw(K, PandyCounter);
                Request (+PandyUpdate'Access);
@@ -353,7 +355,6 @@ procedure Concurrent_Zoo is
                T := (K, 5);
                Messages.Send (HandlerPeople'Access, T);
                Request (+FoxUpdate'Access);
-               Put_Line("Wyjscie od lisow -> " & K'Img);
             end if;
          elsif Id = 6 then -- wyjscie z zoo od pand
             BPandy.Pobierz(K, PandyCounter);
@@ -363,7 +364,6 @@ procedure Concurrent_Zoo is
                T := (K, 6);
                Messages.Send (HandlerPeople'Access, T);
                Request (+PandyUpdate'Access);
-               Put_Line("Wyjscie od pand -> " & K'Img);
             end if;
          elsif Id = 7 then -- przejscie z pand do lisow
             BPandy.Pobierz(K, PandyCounter);
@@ -371,7 +371,6 @@ procedure Concurrent_Zoo is
                Request (+PandyUpdate'Access);
                T := (K, 7);
                Messages.Send (HandlerPeople'Access, T);
-               Put_Line("Wyjscie od pand do lisow -> " & K'Img);
                BLisy.Wstaw(K, FoxCounter);
                Request (+FoxUpdate'Access);
             end if;
@@ -381,7 +380,6 @@ procedure Concurrent_Zoo is
                Request (+FoxUpdate'Access);
                T := (K, 8);
                Messages.Send (HandlerPeople'Access, T);
-               Put_Line("Wyjscie od lisow do pand -> " & K'Img);
                BPandy.Wstaw(K, PandyCounter);
                Request (+PandyUpdate'Access);
             end if;
@@ -391,27 +389,32 @@ procedure Concurrent_Zoo is
          delay 0.1;
       end loop;
    exception
-      when Quit_Error => -- Main loop was quitted, we follow
+      -- W przypadku b³êdu
+      when Quit_Error =>
          null;
       when Error : others =>
-         Say (Exception_Information (Error)); -- This is safe
+         Say (Exception_Information (Error));
    end ScrollTaskPeople;
 
+   -- procedura aktualizuj±ca licznik ¶pi±cych zwierz±t
    procedure SpanieUpdate is
    begin
       SpanieLabel.Set_Text ("Spanie: " & Integer'Image (SpanieCounter) & "/5");
    end SpanieUpdate;
 
+   -- procedura aktualizuj±ca licznik jedz±cych zwierz±t
    procedure KarmienieUpdate is
    begin
       KarmienieLabel.Set_Text ("Karmienie: " & Integer'Image (KarmienieCounter) & "/5");
    end KarmienieUpdate;
 
+   -- procedura aktualizuj±ca licznik zwierz±t na wybiegu
    procedure WybiegUpdate is
    begin
       WybiegLabel.Set_Text ("Wybieg: " & Integer'Image (WybiegCounter) & "/20");
    end WybiegUpdate;
 
+   -- typ tasków dla czynno¶ci zwierz±t
    task type ScrollTaskAnimals (Id : Integer; Zwierze : Integer);
 
    task body ScrollTaskAnimals is
@@ -426,7 +429,6 @@ procedure Concurrent_Zoo is
       end if;
       if Id = 1 then -- wejscie na wybieg
             for K in 1..10 loop
-               Put_Line("Wbijam na wybieg -> " & K'Img & "(" & Rodzaj & ")");
                T := (K, 1, Zwierze);
                BWybieg.Wstaw(K, WybiegCounter);
                Messages2.Send (HandlerAnimals'Access, T);
@@ -477,22 +479,26 @@ procedure Concurrent_Zoo is
          delay 0.1;
       end loop;
    exception
-      when Quit_Error => -- Main loop was quitted, we follow
+      -- W przypadku b³êdu
+      when Quit_Error =>
          null;
       when Error : others =>
-         Say (Exception_Information (Error)); -- This is safe
+         Say (Exception_Information (Error));
    end ScrollTaskAnimals;
 
 begin
+   -- inicjalizacja Gtk, tworzenie okna
    Gtk.Main.Init;
    Gtk_New (Window);
-   Gtk.Main.Router.Init (Window); -- This must be called once
+   Gtk.Main.Router.Init (Window);
 
+   -- ustawienia okna
    Window.Set_Title ("Concurrent ZOO");
    Window.Set_Default_Size (1000, 800);
    Window.On_Delete_Event (Gtk.Missed.Delete_Event_Handler'Access);
    Window.On_Destroy (Gtk.Missed.Destroy_Handler'Access);
 
+   -- ustawienia box'ów w oknie
    Box := Gtk_VBox_New;
    Window.Add (Box);
 
@@ -508,6 +514,7 @@ begin
    Box.Pack_Start(Child => Box2H1, Expand => False, Fill => False);
    Box.Pack_Start(Child => Box2H2, Expand => True, Fill => True);
 
+   -- tworzenie label'ów na liczniki oraz scroll'ów na logi (odwiedzaj±cy)
    Gtk_New (ZooLabel, "Zoo: 0/33");
    Gtk_New (TimeLabel, "Czas: 0:00");
 
@@ -531,6 +538,7 @@ begin
    Gtk_New (KasaScroll);
    KasaScroll.Add (KasaView);
 
+   -- przypisanie label'ów oraz scroll'ów do odpowiednich box'ów (odwiedzaj±cy)
    Box0.Pack_Start (Child => ZooLabel, Expand => True, Fill => False);
    Box0.Pack_Start (Child => TimeLabel, Expand => True, Fill => False);
 
@@ -544,6 +552,7 @@ begin
    Box1H2.Pack_Start (Child => WejscieScroll, Expand => True, Fill => True);
    Box1H2.Pack_Start (Child => KasaScroll, Expand => True, Fill => True);
 
+   -- tworzenie label'ów na liczniki oraz scroll'ów na logi (zwierzêta)
    Gtk_New (SpanieLabel, "Spanie: 0/5");
    Gtk_New (SpanieView);
    Gtk_New (SpanieScroll);
@@ -559,6 +568,7 @@ begin
    Gtk_New (WybiegScroll);
    WybiegScroll.Add (WybiegView);
 
+   -- przypisanie label'ów oraz scroll'ów do odpowiednich box'ów (zwierzêta)
    Box2H1.Pack_Start (Child => KarmienieLabel, Expand => True, Fill => False);
    Box2H1.Pack_Start (Child => SpanieLabel, Expand => True, Fill => False);
    Box2H1.Pack_Start (Child => WybiegLabel, Expand => True, Fill => False);
@@ -570,6 +580,7 @@ begin
    Box.Show_All;
    Window.Show;
 
+   -- deklaracja task'ów
    declare
       Wejscie : ScrollTaskPeople(1);
       Kasa : ScrollTaskPeople(2);
@@ -593,10 +604,13 @@ begin
       LKarmienie2Wybieg : ScrollTaskAnimals(5, 2);
 
    begin
+      -- rozpoczêcie dzia³ania interfejsu
       Gtk.Main.Main;
+      -- funkcja odpowiedzialna za zakoñczenie programu przy zamkniêciu okna
       GNAT.OS_Lib.OS_Exit (0);
    end;
 exception
+   -- W przypadku b³êdu
    when Error : others =>
       Say (Exception_Information (Error));
 end Concurrent_Zoo;
